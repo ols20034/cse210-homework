@@ -1,6 +1,6 @@
 # cse210-student-template
 CSE210 homework for Michelle Olsen
-
+ 
 
 This repository contains the starter code for many different projects. They are arranged as follows:
 
