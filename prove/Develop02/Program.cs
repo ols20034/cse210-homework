@@ -15,7 +15,8 @@ class Program
             Console.WriteLine("2. Display all entries");
             Console.WriteLine("3. Save entries to a file");
             Console.WriteLine("4. Load entries from a file");
-            Console.WriteLine("5. Exit");
+            Console.WriteLine("5. Edit an entry");
+            Console.WriteLine("6. Exit");
             
             string choice = Console.ReadLine();
 
@@ -47,6 +48,13 @@ class Program
                     break;
 
                 case "5":
+                    myJournal.DisplayEntries();
+                    Console.Write("\nEnter entry number to edit: ");
+                    myJournal.EditEntry();
+                    break;
+
+
+                case "6":
                     running = false;
                     Console.WriteLine("\nGoodbye!");
                     break;

@@ -2,7 +2,7 @@ using System;
 
 public class JournalPrompt
 {
-    private List<string> prompts = new List<string>
+    private List<string> _prompts = new List<string>
     {
         "What made you smile today?",
         "Describe a moment you felt proud.",
@@ -15,6 +15,6 @@ public class JournalPrompt
     public string GetPrompt()
     {
         Random rand = new Random();
-        return prompts[rand.Next(prompts.Count)];
+        return _prompts[rand.Next(_prompts.Count)];
     }
 }
