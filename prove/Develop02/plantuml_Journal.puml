@@ -1,29 +1,32 @@
-@startuml journal
+@startuml JournalProgram
 
 class Journal {
-    +List<JournalEntry> Entries
-    +void AddEntry(string prompt, string response)
-    +void DisplayEntries()
-    +void SaveToFile(string filename)
-    +void LoadFromFile(string filename)
+    - List<JournalEntry> _entries
+    + List<JournalEntry> Entries
+    + void AddEntry(string prompt, string response)
+    + void DisplayEntries()
+    + void SaveToFile(string filename)
+    + void LoadFromFile(string filename)
+    + void EditEntry()
 }
 
 class JournalEntry {
-    +string Date
-    +string Prompt
-    +string Response
-    +void Display()
+    - string _date
+    - string _prompt
+    - string _response
+    + string Date
+    + string Prompt
+    + string Response
+    + void UpdateResponse(string newResponse)
+    + void Display()
 }
 
 class JournalPrompt {
-    -List<string> prompts
-    +string GetPrompt()
+    - List<string> _prompts
+    + string GetPrompt()
 }
 
-Journal *-- JournalEntry : contains
-Journal o-- JournalPrompt : uses
+Journal --> "*" JournalEntry : contains
+Journal --> JournalPrompt : uses
 
 @enduml
-
-
-
