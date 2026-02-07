@@ -1,0 +1,47 @@
+@startuml scrpture memorizer
+
+    class Program {
+        + Main(args : string[]) : void
+    }
+
+        class ScriptureReference {
+        - _book : string
+        - _chapter : int
+        - _startVerse : int
+        - _endVerse : int?
+        + ScriptureReference(reference : string)
+        + ScriptureReference(book : string, chapter : int, startVerse : int, endVerse : int?)
+        + GetBook() : string
+        + GetChapter() : int
+        + GetStartVerse() : int
+        + GetEndVerse() : int?
+        + ToString() : string
+    }
+
+    class Scripture {
+        - _reference : ScriptureReference
+        - _words : List<Word>
+        + Scripture(reference : ScriptureReference, text : string)
+        + GetReference() : ScriptureReference
+        + HideRandomWords(count : int) : void
+        + ToString() : string
+        + AllWordsHidden() : bool
+    }
+
+    class Word {
+        - _text : string
+        - _isHidden : bool
+        + Word(text : string)
+        + Hide() : void
+        + GetText() : string
+        + IsHidden : bool
+        + ToString() : string
+    }
+
+    Relationships
+    ScriptureReference <-- Scripture : uses
+    Scripture "1" *-- "many" Word : contains
+    Program --> Scripture
+    Program --> ScriptureReference
+
+@enduml
