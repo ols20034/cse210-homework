@@ -5,12 +5,7 @@ using System.IO;
 public class Journal
 {
     private List<JournalEntry> _entries = new List<JournalEntry>();
-
-    public List<JournalEntry> Entries
-    {
-        get { return _entries; }
-    }
-
+    
     public void AddEntry(string prompt, string response)
     {
         string date = DateTime.Now.ToString("yyyy-MM-dd HH:mm");
