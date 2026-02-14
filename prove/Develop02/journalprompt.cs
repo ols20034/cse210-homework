@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 public class JournalPrompt
 {
@@ -10,6 +11,8 @@ public class JournalPrompt
         "What is something you’re grateful for?",
         "Reflect on a decision you made today.",
         "Describe a moment that you helped someone.",
+        "reflect on a memory that you have that made you feel loved.",
+        "Describe a time when you made a mistake and was able to correct the mistake. How did it make you feel?"
     };
 
     public string GetPrompt()

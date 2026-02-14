@@ -2,7 +2,6 @@
 
 class Journal {
     - List<JournalEntry> _entries
-    + List<JournalEntry> Entries
     + void AddEntry(string prompt, string response)
     + void DisplayEntries()
     + void SaveToFile(string filename)
@@ -14,9 +13,9 @@ class JournalEntry {
     - string _date
     - string _prompt
     - string _response
-    + string Date
-    + string Prompt
-    + string Response
+    + string GetDate()
+    + string GetPrompt()
+    + string GetResponse()
     + void UpdateResponse(string newResponse)
     + void Display()
 }
