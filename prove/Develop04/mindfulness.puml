@@ -1,0 +1,42 @@
+@startuml MindfulnessProgram
+
+title Mindfulness Activity Inheritance Diagram
+
+class mindfulnessActivity {
+    - string _name
+    - string _description
+    - int _duration
+
+    + mindfulnessActivity(string name, string description, int duration)
+    + void StartActivity()
+    + void EndActivity()
+    # void Countdown(int seconds)
+    # void Spinner(int seconds)
+    + void Run() <<abstract>>
+}
+
+class BreathingActivity {
+    + BreathingActivity(int duration)
+    + void Run()
+}
+
+class ReflectionActivity {
+    - List<string> _prompts
+    - List<string> _questions
+
+    + ReflectionActivity(int duration)
+    + void Run()
+}
+
+class ListingActivity {
+    - List<string> _prompts
+
+    + ListingActivity(int duration)
+    + void Run()
+}
+
+mindfulnessActivity <|-- BreathingActivity
+mindfulnessActivity <|-- ReflectionActivity
+mindfulnessActivity <|-- ListingActivity
+
+@enduml
