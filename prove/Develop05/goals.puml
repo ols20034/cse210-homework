@@ -1,0 +1,61 @@
+@startuml goals.caption 
+    
+
+' ===========================
+'        BASE CLASS
+' ===========================
+abstract class Goal {
+    - _name : string
+    - _description : string
+    - _points : int
+    # _isComplete : bool
+
+    + Goal(name : string, description : string, points : int)
+    + GetName() : string
+    + GetDescription() : string
+    + GetPoints() : int
+    + IsComplete() : bool
+    + GetGoalType() : string
+    + RecordEvent() : int
+}
+
+' ===========================
+'     SIMPLE GOAL
+' ===========================
+class SimpleGoal {
+    + SimpleGoal(name : string, description : string, points : int)
+    + GetGoalType() : string
+    + RecordEvent() : int
+}
+
+' ===========================
+'     ETERNAL GOAL
+' ===========================
+class EternalGoal {
+    + EternalGoal(name : string, description : string, points : int)
+    + GetGoalType() : string
+    + RecordEvent() : int
+}
+
+' ===========================
+'     CHECKLIST GOAL
+' ===========================
+class ChecklistGoal {
+    - _targetCount : int
+    - _currentCount : int
+
+    + ChecklistGoal(name : string, description : string, points : int, targetCount : int)
+    + GetGoalType() : string
+    + RecordEvent() : int
+    + GetProgress() : int
+    + GetTarget() : int
+}
+
+' ===========================
+'     RELATIONSHIPS
+' ===========================
+Goal <|-- SimpleGoal
+Goal <|-- EternalGoal
+Goal <|-- ChecklistGoal
+
+@enduml
