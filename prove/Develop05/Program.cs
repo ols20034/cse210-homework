@@ -9,7 +9,7 @@ class Program
     static void Main()
     {
         bool running = true;
- 
+
         while (running)
         {
             Console.WriteLine("\nMenu:");
@@ -54,7 +54,7 @@ class Program
         Console.Write("Enter the name of your goal: ");
         string name = Console.ReadLine();
 
-        Console.Write("Enter a breif description of your goal: ");
+        Console.Write("Enter a brief description of your goal: ");
         string desc = Console.ReadLine();
 
         Console.Write("What is your point value? ");
@@ -78,9 +78,11 @@ class Program
             case "1":
                 goal = new SimpleGoal(name, desc, points);
                 break;
+
             case "2":
                 goal = new EternalGoal(name, desc, points);
                 break;
+
             case "3":
                 Console.Write("Enter the number of times to complete: ");
                 if (!int.TryParse(Console.ReadLine(), out int targetCount))
@@ -88,11 +90,21 @@ class Program
                     Console.WriteLine("Invalid number.");
                     return;
                 }
-                goal = new ChecklistGoal(name, desc, points, targetCount);
+
+                Console.Write("Enter the bonus for completing the checklist: ");
+                if (!int.TryParse(Console.ReadLine(), out int bonus))
+                {
+                    Console.WriteLine("Invalid bonus.");
+                    return;
+                }
+
+                goal = new ChecklistGoal(name, desc, points, targetCount, bonus);
                 break;
+
             case "4":
                 Console.WriteLine("Goal creation cancelled.");
                 return;
+
             default:
                 Console.WriteLine("Incorrect goal type, please try again.");
                 return;
@@ -106,7 +118,7 @@ class Program
     {
         if (goals.Count == 0)
         {
-            Console.WriteLine("You have no goals yet, lets add some goals.");
+            Console.WriteLine("You have no goals yet, let's add some goals.");
             return;
         }
 
@@ -130,13 +142,14 @@ class Program
     static void SaveGoals()
     {
         using StreamWriter writer = new StreamWriter("goals.txt");
+
         foreach (Goal g in goals)
         {
             string line = $"{g.GetGoalType()}|{g.GetName()}|{g.GetDescription()}|{g.GetPoints()}|{g.IsComplete()}";
 
             if (g is ChecklistGoal checklist)
             {
-                line += $"|{checklist.GetProgress()}|{checklist.GetTarget()}";
+                line += $"|{checklist.GetProgress()}|{checklist.GetTarget()}|{checklist.GetBonus()}";
             }
 
             writer.WriteLine(line);
@@ -154,6 +167,7 @@ class Program
         }
 
         goals.Clear();
+
         foreach (string line in File.ReadAllLines("goals.txt"))
         {
             string[] parts = line.Split('|');
@@ -167,19 +181,30 @@ class Program
             {
                 "Simple" => new SimpleGoal(name, desc, points),
                 "Eternal" => new EternalGoal(name, desc, points),
-                "Checklist" => new ChecklistGoal(name, desc, points, int.Parse(parts[6])),
+                "Checklist" => new ChecklistGoal(
+                                    name,
+                                    desc,
+                                    points,
+                                    int.Parse(parts[6]),   // target
+                                    int.Parse(parts[7])    // bonus
+                                ),
                 _ => null
             };
 
             if (g != null)
             {
-                if (complete) g.RecordEvent();
+                // Restore completion state
                 if (g is ChecklistGoal checklist)
                 {
-                    while (checklist.GetProgress() < int.Parse(parts[5]))
+                    int savedProgress = int.Parse(parts[5]);
+                    while (checklist.GetProgress() < savedProgress)
                     {
                         checklist.RecordEvent();
                     }
+                }
+                else if (complete)
+                {
+                    g.RecordEvent();
                 }
 
                 goals.Add(g);
@@ -193,6 +218,7 @@ class Program
     {
         ListGoals();
         Console.Write("Enter goal number to record event: ");
+
         if (int.TryParse(Console.ReadLine(), out int index) && index > 0 && index <= goals.Count)
         {
             Goal g = goals[index - 1];
