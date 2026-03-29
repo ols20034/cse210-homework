@@ -17,7 +17,8 @@ class Program
 
         // Pick a random scripture
         Random rand = new Random();
-        Scripture scripture = scriptures[rand.Next(scriptures.Count)];
+        int randomIndex = rand.Next(scriptures.Count);
+        Scripture scripture = scriptures[randomIndex];
 
         // Main loop
         while (true)
@@ -32,7 +33,8 @@ class Program
             }
 
             Console.WriteLine("\nPress Enter to continue or type 'quit' to exit.");
-            string input = Console.ReadLine().Trim().ToLower();
+            string input = Console.ReadLine();
+            input = input.Trim().ToLower();
 
             if (input == "quit")
             {
@@ -50,16 +52,27 @@ class Program
 
         if (!File.Exists(filename))
         {
-            Console.WriteLine($"File not found: {filename}");
+            Console.WriteLine("File not found: " + filename);
             return scriptures;
         }
 
-        foreach (string line in File.ReadAllLines(filename))
+        string[] lines = File.ReadAllLines(filename);
+
+        for (int i = 0; i < lines.Length; i++)
         {
-            if (string.IsNullOrWhiteSpace(line)) continue;
+            string line = lines[i];
+
+            if (string.IsNullOrWhiteSpace(line))
+            {
+                continue;
+            }
 
             string[] parts = line.Split('|');
-            if (parts.Length != 2) continue;
+
+            if (parts.Length != 2)
+            {
+                continue;
+            }
 
             string referenceText = parts[0].Trim();
             string scriptureText = parts[1].Trim();
@@ -72,7 +85,7 @@ class Program
             }
             catch
             {
-                Console.WriteLine($"Invalid scripture format: {line}");
+                Console.WriteLine("Invalid scripture format: " + line);
             }
         }
 

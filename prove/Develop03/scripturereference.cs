@@ -33,12 +33,25 @@ class ScriptureReference
     }
 
     // Public getter methods (used only if needed)
-    public string GetBook() => _book;
-    public int GetChapter() => _chapter;
-    public int GetStartVerse() => _startVerse;
-    public int? GetEndVerse() => _endVerse;
+    public string GetBook()
+{
+    return _book;
+}
 
-    public override string ToString()
+public int GetChapter()
+{
+    return _chapter;
+}
+
+public int GetStartVerse()
+{
+    return _startVerse;
+}
+
+public int? GetEndVerse()
+{
+    return _endVerse;
+}    public override string ToString()
     {
         return _endVerse.HasValue
             ? $"{_book} {_chapter}:{_startVerse}-{_endVerse}"

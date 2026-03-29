@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 class Scripture
 {
@@ -10,7 +9,13 @@ class Scripture
     public Scripture(ScriptureReference reference, string text)
     {
         _reference = reference;
-        _words = text.Split(' ').Select(word => new Word(word)).ToList();
+        _words = new List<Word>();
+
+        string[] splitWords = text.Split(' ');
+        for (int i = 0; i < splitWords.Length; i++)
+        {
+            _words.Add(new Word(splitWords[i]));
+        }
     }
 
     public ScriptureReference GetReference()
@@ -21,15 +26,30 @@ class Scripture
     public void HideRandomWords(int count)
     {
         Random random = new Random();
-        List<Word> visibleWords = _words.Where(word => !word.IsHidden).ToList();
 
-        if (visibleWords.Count == 0) return;
+        List<Word> visibleWords = new List<Word>();
+        for (int i = 0; i < _words.Count; i++)
+        {
+            Word w = _words[i];
+
+            // FIXED: call IsHidden() as a method
+            if (!w.IsHidden())
+            {
+                visibleWords.Add(w);
+            }
+        }
+
+        if (visibleWords.Count == 0)
+        {
+            return;
+        }
 
         for (int i = 0; i < count && visibleWords.Count > 0; i++)
         {
-            Word wordToHide = visibleWords[random.Next(visibleWords.Count)];
+            int index = random.Next(visibleWords.Count);
+            Word wordToHide = visibleWords[index];
             wordToHide.Hide();
-            visibleWords.Remove(wordToHide);
+            visibleWords.RemoveAt(index);
         }
     }
 
@@ -38,5 +58,18 @@ class Scripture
         return $"{_reference}\n" + string.Join(" ", _words);
     }
 
-    public bool AllWordsHidden() => _words.All(word => word.IsHidden);
+    public bool AllWordsHidden()
+    {
+        for (int i = 0; i < _words.Count; i++)
+        {
+            Word word = _words[i];
+
+            // FIXED: call IsHidden() as a method
+            if (!word.IsHidden())
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 }

@@ -13,10 +13,26 @@ class Word
     {
         _isHidden = true;
     }
-    public string GetText() => _text;
-    public bool IsHidden => _isHidden;
+
+    public string GetText()
+    {
+        return _text;
+    }
+
+    public bool IsHidden()
+    {
+        return _isHidden;
+    }
+
     public override string ToString()
     {
-        return IsHidden ? "_____" : _text;
+        if (_isHidden)
+        {
+            return "_____";
+        }
+        else
+        {
+            return _text;
+        }
     }
 }
