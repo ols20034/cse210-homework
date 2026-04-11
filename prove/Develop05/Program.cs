@@ -43,7 +43,7 @@ class Program
                     running = false;
                     break;
                 default:
-                    Console.WriteLine("Invalid Option, please try again.");
+                    Console.WriteLine("Invalid option, please try again.");
                     break;
             }
         }
@@ -73,45 +73,45 @@ class Program
 
         Goal goal = null;
 
-        switch (type)
+        if (type == "1")
         {
-            case "1":
-                goal = new SimpleGoal(name, desc, points);
-                break;
-
-            case "2":
-                goal = new EternalGoal(name, desc, points);
-                break;
-
-            case "3":
-                Console.Write("Enter the number of times to complete: ");
-                if (!int.TryParse(Console.ReadLine(), out int targetCount))
-                {
-                    Console.WriteLine("Invalid number.");
-                    return;
-                }
-
-                Console.Write("Enter the bonus for completing the checklist: ");
-                if (!int.TryParse(Console.ReadLine(), out int bonus))
-                {
-                    Console.WriteLine("Invalid bonus.");
-                    return;
-                }
-
-                goal = new ChecklistGoal(name, desc, points, targetCount, bonus);
-                break;
-
-            case "4":
-                Console.WriteLine("Goal creation cancelled.");
+            goal = new SimpleGoal(name, desc, points);
+        }
+        else if (type == "2")
+        {
+            goal = new EternalGoal(name, desc, points);
+        }
+        else if (type == "3")
+        {
+            Console.Write("Enter the number of times to complete: ");
+            if (!int.TryParse(Console.ReadLine(), out int targetCount))
+            {
+                Console.WriteLine("Invalid number.");
                 return;
+            }
 
-            default:
-                Console.WriteLine("Incorrect goal type, please try again.");
+            Console.Write("Enter the bonus for completing the checklist: ");
+            if (!int.TryParse(Console.ReadLine(), out int bonus))
+            {
+                Console.WriteLine("Invalid bonus.");
                 return;
+            }
+
+            goal = new ChecklistGoal(name, desc, points, targetCount, bonus);
+        }
+        else if (type == "4")
+        {
+            Console.WriteLine("Goal creation cancelled.");
+            return;
+        }
+        else
+        {
+            Console.WriteLine("Incorrect goal type, please try again.");
+            return;
         }
 
         goals.Add(goal);
-        Console.WriteLine($"The {goal.GetGoalType()} goal \"{goal.GetName()}\" has been added.");
+        Console.WriteLine("The " + goal.GetGoalType() + " goal \"" + goal.GetName() + "\" has been added.");
     }
 
     static void ListGoals()
@@ -126,33 +126,45 @@ class Program
         for (int i = 0; i < goals.Count; i++)
         {
             Goal g = goals[i];
-            string status = g.IsComplete() ? "[X]" : "[ ]";
+            string status;
 
-            if (g is ChecklistGoal checklist)
+            if (g.IsComplete())
             {
-                Console.WriteLine($"{i + 1}. {status} {g.GetGoalType()} - {g.GetName()} ({checklist.GetProgress()}/{checklist.GetTarget()})");
+                status = "[X]";
             }
             else
             {
-                Console.WriteLine($"{i + 1}. {status} {g.GetGoalType()} - {g.GetName()}");
+                status = "[ ]";
+            }
+
+            if (g is ChecklistGoal)
+            {
+                ChecklistGoal checklist = (ChecklistGoal)g;
+                Console.WriteLine((i + 1) + ". " + status + " " + g.GetGoalType() + " - " + g.GetName() + " (" + checklist.GetProgress() + "/" + checklist.GetTarget() + ")");
+            }
+            else
+            {
+                Console.WriteLine((i + 1) + ". " + status + " " + g.GetGoalType() + " - " + g.GetName());
             }
         }
     }
 
     static void SaveGoals()
     {
-        using StreamWriter writer = new StreamWriter("goals.txt");
-
-        foreach (Goal g in goals)
+        using (StreamWriter writer = new StreamWriter("goals.txt"))
         {
-            string line = $"{g.GetGoalType()}|{g.GetName()}|{g.GetDescription()}|{g.GetPoints()}|{g.IsComplete()}";
-
-            if (g is ChecklistGoal checklist)
+            foreach (Goal g in goals)
             {
-                line += $"|{checklist.GetProgress()}|{checklist.GetTarget()}|{checklist.GetBonus()}";
-            }
+                string line = g.GetGoalType() + "|" + g.GetName() + "|" + g.GetDescription() + "|" + g.GetPoints() + "|" + g.IsComplete();
 
-            writer.WriteLine(line);
+                if (g is ChecklistGoal)
+                {
+                    ChecklistGoal checklist = (ChecklistGoal)g;
+                    line += "|" + checklist.GetProgress() + "|" + checklist.GetTarget() + "|" + checklist.GetBonus();
+                }
+
+                writer.WriteLine(line);
+            }
         }
 
         Console.WriteLine("Your goals have been saved.");
@@ -171,31 +183,34 @@ class Program
         foreach (string line in File.ReadAllLines("goals.txt"))
         {
             string[] parts = line.Split('|');
-            string type = parts[0];
-            string name = parts[1];
-            string desc = parts[2];
-            int points = int.Parse(parts[3]);
+            string type   = parts[0];
+            string name   = parts[1];
+            string desc   = parts[2];
+            int points    = int.Parse(parts[3]);
             bool complete = bool.Parse(parts[4]);
 
-            Goal g = type switch
+            Goal g = null;
+
+            if (type == "Simple")
             {
-                "Simple" => new SimpleGoal(name, desc, points),
-                "Eternal" => new EternalGoal(name, desc, points),
-                "Checklist" => new ChecklistGoal(
-                                    name,
-                                    desc,
-                                    points,
-                                    int.Parse(parts[6]),   // target
-                                    int.Parse(parts[7])    // bonus
-                                ),
-                _ => null
-            };
+                g = new SimpleGoal(name, desc, points);
+            }
+            else if (type == "Eternal")
+            {
+                g = new EternalGoal(name, desc, points);
+            }
+            else if (type == "Checklist")
+            {
+                int target = int.Parse(parts[6]);
+                int bonus  = int.Parse(parts[7]);
+                g = new ChecklistGoal(name, desc, points, target, bonus);
+            }
 
             if (g != null)
             {
-                // Restore completion state
-                if (g is ChecklistGoal checklist)
+                if (g is ChecklistGoal)
                 {
+                    ChecklistGoal checklist = (ChecklistGoal)g;
                     int savedProgress = int.Parse(parts[5]);
                     while (checklist.GetProgress() < savedProgress)
                     {
@@ -223,7 +238,7 @@ class Program
         {
             Goal g = goals[index - 1];
             int earned = g.RecordEvent();
-            Console.WriteLine($"Event recorded for \"{g.GetName()}\". You have earned {earned} points.");
+            Console.WriteLine("Event recorded for \"" + g.GetName() + "\". You have earned " + earned + " points.");
         }
         else
         {

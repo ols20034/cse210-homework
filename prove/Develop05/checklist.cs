@@ -12,26 +12,41 @@ class ChecklistGoal : Goal
         _bonus = bonus;
     }
 
-    public override string GetGoalType() => "Checklist";
+    public override string GetGoalType()
+    {
+        return "Checklist";
+    }
 
     public override int RecordEvent()
     {
-        if (_isComplete) return 0;
+        if (_isComplete)
+        {
+            return 0;
+        }
 
         _currentCount++;
 
-        // Final completion → award points + bonus
         if (_currentCount == _targetCount)
         {
             _isComplete = true;
             return GetPoints() + _bonus;
         }
 
-        // Partial progress → award normal points
         return GetPoints();
     }
 
-    public int GetProgress() => _currentCount;
-    public int GetTarget() => _targetCount;
-    public int GetBonus() => _bonus;
+    public int GetProgress()
+    {
+        return _currentCount;
+    }
+
+    public int GetTarget()
+    {
+        return _targetCount;
+    }
+
+    public int GetBonus()
+    {
+        return _bonus;
+    }
 }

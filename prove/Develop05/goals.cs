@@ -13,12 +13,26 @@ abstract class Goal
         _isComplete = false;
     }
 
+    public string GetName()
+    {
+        return _name;
+    }
 
-    public string GetName() => _name;
-    public string GetDescription() => _description;
-    public int GetPoints() => _points;
-    public bool IsComplete() => _isComplete;
+    public string GetDescription()
+    {
+        return _description;
+    }
+
+    public int GetPoints()
+    {
+        return _points;
+    }
+
+    public bool IsComplete()
+    {
+        return _isComplete;
+    }
 
     public abstract string GetGoalType();
-    public abstract int RecordEvent(); // returns points earned
+    public abstract int RecordEvent();
 }
