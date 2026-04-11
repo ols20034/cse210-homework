@@ -1,6 +1,6 @@
 public class Running : Activity
 {
-    private double distance; // in miles
+    private double distance;
 
     public Running(string date, int minutes, double distance)
         : base(date, minutes)
@@ -8,5 +8,8 @@ public class Running : Activity
         this.distance = distance;
     }
 
-    public override double GetDistance() => distance;
+    public override double GetDistance()
+    {
+        return distance;
+    }
 }

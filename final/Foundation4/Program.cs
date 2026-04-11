@@ -7,13 +7,11 @@ class Program
     {
         List<Activity> activities = new List<Activity>();
 
-        // Create activities
         activities.Add(new Running("03 Nov 2022", 30, 3.0));
         activities.Add(new Cycling("04 Nov 2022", 45, 18.0));
         activities.Add(new Swimming("05 Nov 2022", 40, 20));
 
-        // Display summaries using polymorphism
-        foreach (var activity in activities)
+        foreach (Activity activity in activities)
         {
             Console.WriteLine(activity.GetSummary());
         }

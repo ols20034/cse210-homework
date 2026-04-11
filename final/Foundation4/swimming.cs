@@ -8,5 +8,8 @@ public class Swimming : Activity
         this.laps = laps;
     }
 
-    public override double GetDistance() => laps * 50 / 1000.0 * 0.62; // meters to miles
+    public override double GetDistance()
+    {
+        return laps * 50 / 1000.0 * 0.62;
+    }
 }

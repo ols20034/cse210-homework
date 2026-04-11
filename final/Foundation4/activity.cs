@@ -9,18 +9,33 @@ public abstract class Activity
         this.minutes = minutes;
     }
 
-    public string GetDate() => date;
-    public int GetMinutes() => minutes;
+    public string GetDate()
+    {
+        return date;
+    }
 
-    public abstract double GetDistance(); // in miles
-    public virtual double GetSpeed() => (GetDistance() / minutes) * 60;
-    public virtual double GetPace() => minutes / GetDistance();
+    public int GetMinutes()
+    {
+        return minutes;
+    }
+
+    public abstract double GetDistance();
+
+    public virtual double GetSpeed()
+    {
+        return (GetDistance() / minutes) * 60;
+    }
+
+    public virtual double GetPace()
+    {
+        return minutes / GetDistance();
+    }
 
     public virtual string GetSummary()
     {
-        return $"{date} {this.GetType().Name} ({minutes} min) - " +
-               $"Distance: {GetDistance():0.0} miles, " +
-               $"Speed: {GetSpeed():0.0} mph, " +
-               $"Pace: {GetPace():0.0} min per mile";
+        return date + " " + this.GetType().Name + " (" + minutes + " min) - " +
+               "Distance: " + GetDistance().ToString("0.0") + " miles, " +
+               "Speed: " + GetSpeed().ToString("0.0") + " mph, " +
+               "Pace: " + GetPace().ToString("0.0") + " min per mile";
     }
 }
