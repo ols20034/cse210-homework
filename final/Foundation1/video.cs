@@ -1,13 +1,23 @@
 using System;
 using System.Collections.Generic;
 
-// Youtube video
-public class Video : MediaContent
+public class Video
 {
+    private string title;
+    private string author;
+    private int lengthInSeconds;
     private List<Comment> comments = new List<Comment>();
 
     public Video(string title, string author, int lengthInSeconds)
-        : base(title, author, lengthInSeconds) { }
+    {
+        this.title = title;
+        this.author = author;
+        this.lengthInSeconds = lengthInSeconds;
+    }
+
+    public string GetTitle()       { return title; }
+    public string GetAuthor()      { return author; }
+    public int GetLength()         { return lengthInSeconds; }
 
     public void AddComment(Comment comment)
     {
@@ -19,11 +29,11 @@ public class Video : MediaContent
         return comments.Count;
     }
 
-    public override void DisplayInfo()
+    public void DisplayInfo()
     {
-        Console.WriteLine($"\nTitle: {Title}");
-        Console.WriteLine($"Author: {Author}");
-        Console.WriteLine($"Length: {LengthInSeconds} seconds");
+        Console.WriteLine($"\nTitle: {GetTitle()}");
+        Console.WriteLine($"Author: {GetAuthor()}");
+        Console.WriteLine($"Length: {GetLength()} seconds");
         Console.WriteLine($"Number of Comments: {GetCommentCount()}");
         Console.WriteLine("Comments:");
         foreach (var comment in comments)

@@ -25,7 +25,7 @@ class Program
         // Add comments to video3
         video3.AddComment(new Comment("Michelle", "Love that it uses USB-B to power, easy to use on my desk"));
         video3.AddComment(new Comment("Christy", "Very informative."));
-        video3.AddComment(new Comment("Casey", "How quiet is it while on? "));
+        video3.AddComment(new Comment("Casey", "How quiet is it while on?"));
 
         // Add videos to list
         videoList.Add(video1);
@@ -38,4 +38,4 @@ class Program
             video.DisplayInfo();
         }
     }
-} 
+}

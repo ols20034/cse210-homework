@@ -1,17 +1,26 @@
-// comment on videos
 public class Comment
 {
-    public string CommenterName { get; private set; }
-    public string Text { get; private set; }
+    private string commenterName;
+    private string text;
 
     public Comment(string commenterName, string text)
     {
-        CommenterName = commenterName;
-        Text = text;
+        this.commenterName = commenterName;
+        this.text = text;
+    }
+
+    public string GetCommenterName()
+    {
+        return commenterName;
+    }
+
+    public string GetText()
+    {
+        return text;
     }
 
     public void DisplayComment()
     {
-        Console.WriteLine($"- {CommenterName}: {Text}");
+        Console.WriteLine($"- {commenterName}: {text}");
     }
 }
